@@ -1,3 +1,4 @@
+import { Vacation } from './../../models/Vacation';
 import mongoose, { Schema } from "mongoose";
 import { dbConfig } from "../../utils/dbConfig";
 
@@ -11,5 +12,5 @@ const VacationSchema = new mongoose.Schema ({
      
 }, {collection: dbConfig.VACATIONS_COLLECTION})
 
-export const VacationModel = mongoose.model('Vacation', VacationSchema);
+export const VacationModel = mongoose.model<Vacation>('Vacation', VacationSchema);
 

@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import { serverConfigs } from "./src/utils/serverConfig";
 import { vacationsRouter } from "./Routes/vacations";
 import { dbConfig } from "./src/utils/dbConfig";
+import { userRouter } from "./Routes/user";
 const server = express();
 
 
@@ -51,6 +52,8 @@ server.get('/',(req: Request, res: Response)=>{
     res.status(200).send("Hello world, again!!!")
 })
 server.use(vacationsRouter);
+
+server.use(userRouter)
 
 server.listen(serverConfigs.PORT, serverConfigs.HOST, ()=>{
     console.log(`server is up and running on port: ${serverConfigs.PORT}`);

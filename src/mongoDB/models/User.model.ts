@@ -6,5 +6,7 @@ const UserSchema = new mongoose.Schema({
     lastName: String,
     email: String,
     pwd: String,
-    role: Role
-})
+    role: String
+}, {collection: dbConfig.USERS_COLLECTION});
+
+export const userModel = mongoose.model("User", UserSchema);
