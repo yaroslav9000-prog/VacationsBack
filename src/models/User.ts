@@ -5,7 +5,7 @@ interface Role{
     role: "user" | "admin";
 }
 //Class
-export class User{
+class User{
     public firstName: string;
     public lastName: string;
     public email: string;
@@ -19,4 +19,8 @@ export class User{
         this. pwd = pwd;
         this.role = role;
     }
+}
+export {
+    User,
+    Role
 }
