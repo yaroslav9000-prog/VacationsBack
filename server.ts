@@ -6,6 +6,8 @@ import { serverConfigs } from "./src/utils/serverConfig";
 import { vacationsRouter } from "./Routes/vacations";
 import { dbConfig } from "./src/utils/dbConfig";
 import { userRouter } from "./Routes/user";
+// import jwt from "jsonwebtoken";
+
 const server = express();
 
 
@@ -48,7 +50,7 @@ server.use(fileUpload({createParentPath: true}))
 
 server.use(express.urlencoded({extended: false}))
 
-server.get('/',(req: Request, res: Response)=>{
+server.get('/api',(req: Request, res: Response)=>{
     res.status(200).send("Hello world, again!!!")
 })
 server.use(vacationsRouter);

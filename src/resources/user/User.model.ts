@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { dbConfig } from "../../utils/dbConfig";
 import {Role} from "./User";
 const UserSchema = new mongoose.Schema({
