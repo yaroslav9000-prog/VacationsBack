@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { dbConfig } from "../../utils/dbConfig";
-import {Role} from "../../models/User";
+import {Role} from "./User";
 const UserSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,

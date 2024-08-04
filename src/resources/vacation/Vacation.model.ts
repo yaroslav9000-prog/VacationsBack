@@ -1,4 +1,4 @@
-import { Vacation } from './../../models/Vacation';
+import { Vacation } from './Vacation';
 import mongoose, { Schema } from "mongoose";
 import { dbConfig } from "../../utils/dbConfig";
 

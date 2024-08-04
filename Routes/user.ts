@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { userModel } from '../src/mongoDB/models/user.model';
+import { userModel } from '../src/resources/user/User.model';
 export const userRouter = Router();
 
 userRouter.get("/users", async(req: Request, res: Response)=>{
@@ -11,4 +11,7 @@ userRouter.get("/users", async(req: Request, res: Response)=>{
         console.log(`mistake occured while you fetching data`);
         res.status(500).json('you fucked up boy');
     }
+})
+userRouter.post("/registerUser", (req: Request, res: Response)=>{
+    
 })
