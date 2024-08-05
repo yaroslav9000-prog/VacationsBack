@@ -20,10 +20,13 @@ vacationsRouter.get('/api/vacations', async(req: any, res: Response)=>{
     }
 
 })
-// vacationsRouter.post('api/createVacations', async(req: Request, res: Response)=>{
-//     try{
-//         const newVacation : Vacation = {req.body.vacaDestination, } 
-//     }catch(e){
-//         console.log(e);
-//     }
-// })
+vacationsRouter.post('/api/createVacation', async(req: Request, res: Response)=>{
+    try{
+        const newVacation : Vacation = await {...req.body} ;
+        console.log(newVacation);
+        await VacationModel.create(newVacation);
+        res.status(200).send({"msg": "new vacation was successfully added!"});
+    }catch(e){
+        console.log(e);
+    }
+})
