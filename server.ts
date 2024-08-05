@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import { serverConfigs } from "./src/utils/serverConfig";
 import { vacationsRouter } from "./Routes/vacations";
 import { dbConfig } from "./src/utils/dbConfig";
-import { userRouter } from "./Routes/user";
+import { authorizationRouter } from "./Routes/authorization";
 // import jwt from "jsonwebtoken";
 
 const server = express();
@@ -55,7 +55,7 @@ server.get('/api',(req: Request, res: Response)=>{
 })
 server.use(vacationsRouter);
 
-server.use(userRouter)
+server.use(authorizationRouter)
 
 server.listen(serverConfigs.PORT, serverConfigs.HOST, ()=>{
     console.log(`server is up and running on port: ${serverConfigs.PORT}`);

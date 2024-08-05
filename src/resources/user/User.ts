@@ -16,7 +16,7 @@ class User{
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this. pwd = pwd;
+        this.pwd = pwd;
         this.role = role;
     }
 }

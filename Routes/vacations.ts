@@ -28,5 +28,6 @@ vacationsRouter.post('/api/createVacation', async(req: Request, res: Response)=>
         res.status(200).send({"msg": "new vacation was successfully added!"});
     }catch(e){
         console.log(e);
+        res.status(403).send({"msg": "something went wrong with your request, invalid form or soemthing else"});
     }
 })

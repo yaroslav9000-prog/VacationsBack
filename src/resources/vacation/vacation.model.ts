@@ -3,36 +3,40 @@ import mongoose, { Schema, model } from "mongoose";
 import { dbConfig } from "../../utils/dbConfig";
 
 const VacationSchema = new mongoose.Schema ({
-    vacaDestination: {
+    vacationDestination: {
         type: String,
         required: true
     },
-    vacaDescription: {
+    vacationDescription: {
         type: String, 
         required: true
         
     },
-    vacaStartDate: {
+    startDateVacation: {
         type: String, 
         required: true
         
     },
-    vacaEndDate: {
+    endDateVacation: {
         type: String, 
         required: true
         
     },
-    vacaPrice: {
-        type: String, 
-        required: true
+    vacationPrice: {
+        type: Number, 
+        required: true,
+        max: 10000
         
     },
-    imgName: {
+    imageName: {
         type: String, 
         required: true   
     }
+    
      
-}, {collection: dbConfig.VACATIONS_COLLECTION})
+}, {    versionKey: false,
+        toJSON: {virtuals: true},
+        collection: dbConfig.VACATIONS_COLLECTION})
 
 export const VacationModel = mongoose.model<Vacation>('Vacation', VacationSchema);
 
