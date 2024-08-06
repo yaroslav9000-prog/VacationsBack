@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { fetchUsers, handleNewUser } from '../src/resources/user/users.controller';
+import { fetchUsers } from '../src/resources/user/users.controller';
+import { handleNewUser } from '../Controllers/register';
 export const authorizationRouter = Router();
 
 authorizationRouter.get("/api/login", async(req: Request, res: Response)=>{
@@ -15,3 +16,5 @@ authorizationRouter.get("/api/login", async(req: Request, res: Response)=>{
 authorizationRouter.post("/api/registerUser", (req: Request, res: Response)=>{
     handleNewUser(req, res);
 })
+
+
