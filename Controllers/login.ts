@@ -1,11 +1,17 @@
+import { Types } from 'mongoose';
 import {Response, Request} from "express";
 import { fetchUsers } from "../src/resources/user/users.controller";
 import { User } from "../src/resources/user/user";
 import jwt from "jsonwebtoken";
 import { userModel } from "../src/resources/user/User.model";
-import { ObjectId } from "mongodb";
+import * as mongoDB from "mongodb";
+
+const ObjectId = mongoDB.ObjectId;
+
 const result = require("dotenv").config();
 const env = result.parsed;
+
+
 const handleLogin = async (req: Request, res: Response)=>{
     const {email} = req.body;
     const usersData = await fetchUsers();
@@ -31,7 +37,11 @@ const handleLogin = async (req: Request, res: Response)=>{
             refreshTokenSecret,
             {expiresIn: "1d"}
         );
-        userModel.findByIdAndUpdate()}, {$set: {"refreshToken": refreshToken}})
+
+        const id : mongoDB.ObjectId = new ObjectId(`${foundUser._id}`);
+
+        const someDoc = await userModel.findByIdAndUpdate({_id: id}, {$set: {"refreshToken": refreshToken}});
+        console.log(someDoc);
         res.json({accessToken});
     }else{
         return res.sendStatus(401);

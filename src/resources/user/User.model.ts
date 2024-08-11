@@ -33,4 +33,4 @@ const UserSchema = new mongoose.Schema({
     toJSON: {virtuals: true},
     collection: dbConfig.USERS_COLLECTION});
 
-export const userModel = mongoose.model<User>("User", UserSchema);
+export const userModel = mongoose.model<User>("Users", UserSchema);
