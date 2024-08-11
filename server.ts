@@ -50,12 +50,12 @@ server.use(fileUpload({createParentPath: true}))
 
 server.use(express.urlencoded({extended: false}))
 
-server.get('/api',(req: Request, res: Response)=>{
+server.get('/',(req: Request, res: Response)=>{
     res.status(200).send("Hello world, again!!!")
 })
-server.use(vacationsRouter);
+server.use("/api/vacations",vacationsRouter);
 
-server.use(authorizationRouter)
+server.use("/api/authorization",authorizationRouter)
 
 server.listen(serverConfigs.PORT, serverConfigs.HOST, ()=>{
     console.log(`server is up and running on port: ${serverConfigs.PORT}`);

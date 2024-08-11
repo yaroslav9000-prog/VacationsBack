@@ -10,7 +10,7 @@ export const vacationsRouter = express.Router();
 
 vacationsRouter.use(express.json());
 
-vacationsRouter.get('/api/vacations', async(req: any, res: Response)=>{
+vacationsRouter.get('/', async(req: any, res: Response)=>{
     try{
         const data = await VacationModel.find({});
         console.log("You got your data there finally :)!!!");
@@ -20,7 +20,7 @@ vacationsRouter.get('/api/vacations', async(req: any, res: Response)=>{
     }
 
 })
-vacationsRouter.post('/api/createVacation', async(req: Request, res: Response)=>{
+vacationsRouter.post('/createVacation', async(req: Request, res: Response)=>{
     try{
         const newVacation : Vacation = await {...req.body} ;
         console.log(newVacation);
