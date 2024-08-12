@@ -2,9 +2,9 @@ import { Router, Request, Response } from 'express';
 import { fetchUsers } from '../src/resources/user/users.controller';
 import { handleNewUser } from '../Controllers/register';
 import { handleLogin } from '../Controllers/login';
-export const authorizationRouter = Router();
+export const userRouter = Router();
 
-authorizationRouter.get("/login", async(req: Request, res: Response)=>{
+userRouter.get("/login", async(req: Request, res: Response)=>{
     try{
         handleLogin(req, res)
         
@@ -13,7 +13,7 @@ authorizationRouter.get("/login", async(req: Request, res: Response)=>{
         res.status(500).json('you fucked up boy');
     }
 })
-authorizationRouter.post("/registerUser", (req: Request, res: Response)=>{
+userRouter.post("/registerUser", (req: Request, res: Response)=>{
     handleNewUser(req, res);
 })
 

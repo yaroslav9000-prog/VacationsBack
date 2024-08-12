@@ -5,6 +5,7 @@ import axios from "axios";
 
 import { VacationModel } from "../src/resources/vacation/vacation.model";
 import { Vacation } from "../src/resources/vacation/vacation.interface";
+import { addNewVacation, fetchVacations } from "../src/resources/vacation/vacation.controller";
 
 export const vacationsRouter = express.Router();
 
@@ -12,9 +13,7 @@ vacationsRouter.use(express.json());
 
 vacationsRouter.get('/', async(req: any, res: Response)=>{
     try{
-        const data = await VacationModel.find({});
-        console.log("You got your data there finally :)!!!");
-        res.status(200).json(data);
+        fetchVacations(req, res);
     }catch(e){
         console.log(`there is an error fetching your data ${e}`);
     }
@@ -22,12 +21,13 @@ vacationsRouter.get('/', async(req: any, res: Response)=>{
 })
 vacationsRouter.post('/createVacation', async(req: Request, res: Response)=>{
     try{
-        const newVacation : Vacation = await {...req.body} ;
-        console.log(newVacation);
-        await VacationModel.create(newVacation);
-        res.status(200).send({"msg": "new vacation was successfully added!"});
+        await addNewVacation(req, res);
     }catch(e){
         console.log(e);
-        res.status(403).send({"msg": "something went wrong with your request, invalid form or soemthing else"});
+        res.status(403).send({"msg": "something went wrong with your request, invalid form or something else"});
     }
+})
+
+vacationsRouter.delete('/deleteVacation', async(req: Request, res: Response)=>{
+    
 })

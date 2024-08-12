@@ -21,7 +21,7 @@ const handleLogin = async (req: Request, res: Response)=>{
     if(foundUser && foundUser.pwd === req.body.pwd){
         //Before i finish i generate a jwt for a user.
         const jwtPayload = {
-            id: foundUser._id,
+            email: foundUser.email,
             name: foundUser.firstName,
             role: foundUser.role
         }
@@ -33,15 +33,15 @@ const handleLogin = async (req: Request, res: Response)=>{
             {expiresIn: "30s"}
         );
         const refreshToken = jwt.sign(
-            {"email": foundUser.email},
+            jwtPayload,
             refreshTokenSecret,
             {expiresIn: "1d"}
         );
 
         const id : mongoDB.ObjectId = new ObjectId(`${foundUser._id}`);
 
-        const someDoc = await userModel.findByIdAndUpdate({_id: id}, {$set: {"refreshToken": refreshToken}});
-        console.log(someDoc);
+        // const someDoc = await userModel.findByIdAndUpdate({_id: id}, {$set: {"refreshToken": refreshToken}});
+        // console.log(someDoc);
         res.json({accessToken});
     }else{
         return res.sendStatus(401);
