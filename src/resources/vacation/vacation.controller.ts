@@ -20,6 +20,7 @@ const deleteVacation = async (req: Request, res: Response)=>{
     const vacationId = req.body.id;
     const id : mongoDB.ObjectId = new ObjectId(`${vacationId}`);
     await VacationModel.deleteOne({_id: id})
+    res.send(200).json({"msg": "vacation deleted"});
 }
 
 

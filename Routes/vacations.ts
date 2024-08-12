@@ -5,9 +5,12 @@ import axios from "axios";
 
 import { VacationModel } from "../src/resources/vacation/vacation.model";
 import { Vacation } from "../src/resources/vacation/vacation.interface";
-import { addNewVacation, fetchVacations } from "../src/resources/vacation/vacation.controller";
+import { addNewVacation, deleteVacation, fetchVacations } from "../src/resources/vacation/vacation.controller";
+import { verifyJWT } from "../MiddleWare/verifyJWT";
 
 export const vacationsRouter = express.Router();
+
+vacationsRouter.use(verifyJWT);
 
 vacationsRouter.use(express.json());
 
@@ -29,5 +32,9 @@ vacationsRouter.post('/createVacation', async(req: Request, res: Response)=>{
 })
 
 vacationsRouter.delete('/deleteVacation', async(req: Request, res: Response)=>{
-    
+    try{
+        deleteVacation(req, res);
+    }catch(err){
+        res.status(400).json({"msg": "no such vacation to delete"})
+    }    
 })

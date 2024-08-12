@@ -22,7 +22,11 @@ const UserSchema = new mongoose.Schema({
         minLength: [4, "minimum length for password is 4 characters"],
         required: true
     },
-    role: String
+    role: String,
+    token: {
+        type: String,
+        required: false
+    }
 }, {
     virtuals:{
         getUserId: {get(){

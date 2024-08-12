@@ -5,14 +5,15 @@ const env = result.parsed;
 
 export const verifyJWT = (req: any, res: Response, next: NextFunction)=>{
     const authHeader = req.headers['authorization'];
+    console.log("one line before status 401")
     if(!authHeader) return res.sendStatus(401);
     console.log(authHeader);
-
     const token = authHeader.split(' ')[1];
     jwt.verify(
         token,
         env["ACCESS_TOKEN_SECRET"],
-        (err, decoded)=>{
+        (err: any, decoded: any)=>{
+            console.log("one line before 403");
             if(err) return res.sendStatus(403);
             req.email= decoded.email;
             next()

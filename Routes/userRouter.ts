@@ -1,12 +1,15 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { fetchUsers } from '../src/resources/user/users.controller';
 import { handleNewUser } from '../Controllers/register';
 import { handleLogin } from '../Controllers/login';
+import { verifyJWT } from '../MiddleWare/verifyJWT';
 export const userRouter = Router();
 
-userRouter.get("/login", async(req: Request, res: Response)=>{
+
+
+userRouter.get("/login", async(req: Request, res: Response, next: NextFunction)=>{
     try{
-        handleLogin(req, res)
+        handleLogin(req, res, next);
         
     }catch(e){
         console.log(`mistake occured while you fetching data`);

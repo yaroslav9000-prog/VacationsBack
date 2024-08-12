@@ -1,5 +1,5 @@
 import { Types } from 'mongoose';
-import {Response, Request} from "express";
+import {Response, Request, NextFunction} from "express";
 import { fetchUsers } from "../src/resources/user/users.controller";
 import { User } from "../src/resources/user/user";
 import jwt from "jsonwebtoken";
@@ -12,14 +12,19 @@ const result = require("dotenv").config();
 const env = result.parsed;
 
 
-const handleLogin = async (req: Request, res: Response)=>{
-    const {email} = req.body;
+const handleLogin = async (req: Request, res: Response, next: NextFunction)=>{
+    const {email, pwd} = req.body;
     const usersData = await fetchUsers();
     // const duplicateEmail = usersData.find((item: User)=> item.email == email);
-    if(!req.body.pwd || req.body.firstName) return res.status(400).json({"msg": "password and username is required"});
-    const foundUser = usersData.find((item: User)=> item.email == req.body.email);
-    if(foundUser && foundUser.pwd === req.body.pwd){
+    console.log(usersData);
+    if(!req.body.pwd || !req.body.email) return res.status(400).json({"msg": "password and username is required"});
+    const foundUser= usersData.find((item: User)=> item.email == req.body.email);
+    if(foundUser === undefined){
+        console.log("entered false statement");
+        return res.sendStatus(401);
+    }else if(foundUser.email === email && foundUser.pwd === pwd){
         //Before i finish i generate a jwt for a user.
+        console.log("users pwd and email matched");
         const jwtPayload = {
             email: foundUser.email,
             name: foundUser.firstName,
@@ -28,7 +33,7 @@ const handleLogin = async (req: Request, res: Response)=>{
         const accessTokenSecret = env["ACCESS_TOKEN_SECRET"];
         const refreshTokenSecret = env["REFRESH_TOKEN_SECRET"];
         const accessToken = jwt.sign(
-            jwtPayload,
+            {"email": foundUser.email},
             accessTokenSecret,
             {expiresIn: "30s"}
         );
@@ -40,11 +45,9 @@ const handleLogin = async (req: Request, res: Response)=>{
 
         const id : mongoDB.ObjectId = new ObjectId(`${foundUser._id}`);
 
-        // const someDoc = await userModel.findByIdAndUpdate({_id: id}, {$set: {"refreshToken": refreshToken}});
-        // console.log(someDoc);
-        res.json({accessToken});
-    }else{
-        return res.sendStatus(401);
+        const someDoc = await userModel.findByIdAndUpdate({_id: id}, {$set: {"token": refreshToken}});
+        console.log(someDoc);
+        res.status(200).json({"msg":accessToken});
     }
     
 }

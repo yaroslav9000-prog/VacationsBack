@@ -12,7 +12,7 @@ class User{
     public pwd: string;
     public role: Role;
 
-    constructor(firstName: string, lastName: string, email: string, pwd: string, role: Role, public id?: ObjectId){
+    constructor(firstName: string, lastName: string, email: string, pwd: string, role: Role, public id?: ObjectId, public token?: string){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
