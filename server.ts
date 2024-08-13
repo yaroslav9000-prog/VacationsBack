@@ -5,9 +5,9 @@ import mongoose from "mongoose";
 import { serverConfigs } from "./src/utils/serverConfig";
 import { vacationsRouter } from "./Routes/vacations";
 import { dbConfig } from "./src/utils/dbConfig";
-import { userRouter } from "./Routes/userRouter";
-// import jwt from "jsonwebtoken";
-
+import { authRouter } from "./Routes/authRouter";
+import { verifyJWT } from "./MiddleWare/verifyJWT";
+// import jwt from "jsonwebtoken"
 const server = express();
 
 
@@ -44,18 +44,23 @@ try{
 
 server.use(express.json());
 
+
 server.use(express.static("upload"));
 
 server.use(fileUpload({createParentPath: true}))
 
 server.use(express.urlencoded({extended: false}))
 
-server.get('/',(req: Request, res: Response)=>{
+server.get("/",(req: Request, res: Response)=>{
     res.status(200).send("Hello world, again!!!")
 })
+
+server.use("/api/auth", authRouter)
+server.use(verifyJWT);
+
 server.use("/api/vacations",vacationsRouter);
 
-server.use("/api/users",userRouter)
+
 
 server.listen(serverConfigs.PORT, serverConfigs.HOST, ()=>{
     console.log(`server is up and running on port: ${serverConfigs.PORT}`);

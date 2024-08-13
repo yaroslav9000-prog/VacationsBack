@@ -3,12 +3,14 @@ import { fetchUsers } from '../src/resources/user/users.controller';
 import { handleNewUser } from '../Controllers/register';
 import { handleLogin } from '../Controllers/login';
 import { verifyJWT } from '../MiddleWare/verifyJWT';
-export const userRouter = Router();
+import express from "express";
+export const authRouter = express.Router();
 
 
 
-userRouter.get("/login", async(req: Request, res: Response, next: NextFunction)=>{
+authRouter.get("/login", async(req: Request, res: Response, next: NextFunction)=>{
     try{
+        console.log(req);
         handleLogin(req, res, next);
         
     }catch(e){
@@ -16,7 +18,7 @@ userRouter.get("/login", async(req: Request, res: Response, next: NextFunction)=
         res.status(500).json('you fucked up boy');
     }
 })
-userRouter.post("/registerUser", (req: Request, res: Response)=>{
+authRouter.post("/registerUser", (req: Request, res: Response)=>{
     handleNewUser(req, res);
 })
 
