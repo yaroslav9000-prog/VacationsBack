@@ -45,9 +45,9 @@ const handleLogin = async (req: Request, res: Response, next: NextFunction)=>{
 
         const id : mongoDB.ObjectId = new ObjectId(`${foundUser._id}`);
 
-        const someDoc = await userModel.findByIdAndUpdate({_id: id}, {$set: {"token": refreshToken}});
-        console.log(someDoc);
-        res.status(200).json({"msg":accessToken});
+        await userModel.findByIdAndUpdate({_id: id}, {$set: {"token": refreshToken}});
+        res.cookie("jwt", refreshToken, {maxAge: 1000 * 60 * 60 * 24, httpOnly: true});
+        res.status(200).json({"accessToken":accessToken});
     }
     
 }

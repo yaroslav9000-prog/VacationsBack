@@ -13,7 +13,6 @@ export const verifyJWT = (req: any, res: Response, next: NextFunction)=>{
         token,
         env["ACCESS_TOKEN_SECRET"],
         (err: any, decoded: any)=>{
-            console.log("one line before 403");
             if(err) return res.sendStatus(403);
             req.email= decoded.email;
             next()

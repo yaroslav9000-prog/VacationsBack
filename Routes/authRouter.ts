@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { fetchUsers } from '../src/resources/user/users.controller';
 import { handleNewUser } from '../Controllers/register';
-import { handleLogin } from '../Controllers/login';
+import { handleLogin } from '../Controllers/login.controller';
 import { verifyJWT } from '../MiddleWare/verifyJWT';
 import express from "express";
 export const authRouter = express.Router();

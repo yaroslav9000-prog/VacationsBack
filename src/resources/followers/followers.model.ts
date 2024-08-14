@@ -4,11 +4,15 @@ import { userModel } from "../user/User.model";
 import { Follower } from "./follower.interface";
 import { dbConfig } from "../../utils/dbConfig";
 const followerSchema = new Schema({
-    _id: {
+    userId: {
         type: Schema.ObjectId,
-        required: true
+        required: true,
+        ref: userModel
     },
-    vacationsIDs: [{type: Schema.Types.ObjectId}]
+    vacationsID: {
+        type: Schema.Types.ObjectId,
+        ref: VacationModel
+    }
 },{
     versionKey: false,
     collection: dbConfig.FOLLOWERS_COLLECTION,

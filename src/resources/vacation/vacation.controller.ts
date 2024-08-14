@@ -12,7 +12,7 @@ const addNewVacation = async(req: Request, res: Response)=>{
 }
 const fetchVacations = async (req: Request, res: Response) =>{
     const data = await VacationModel.find({});
-    console.log("You got your data there finally :)!!!");
+    console.log("I brought you vacation data :)!!!");
     res.status(200).json(data);
 }
 
