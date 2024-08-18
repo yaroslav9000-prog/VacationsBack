@@ -14,15 +14,13 @@ const env = result.parsed;
 
 const handleLogin = async (req: Request, res: Response, next: NextFunction)=>{
     const {email, pwd} = req.body;
-    const usersData = await fetchUsers();
     // const duplicateEmail = usersData.find((item: User)=> item.email == email);
-    console.log(usersData);
     if(!req.body.pwd || !req.body.email) return res.status(400).json({"msg": "password and username is required"});
-    const foundUser= usersData.find((item: User)=> item.email == req.body.email);
-    if(foundUser === undefined){
+    const foundUser= await userModel.findOne({email: email, pwd: pwd});
+    if(!foundUser){
         console.log("entered false statement");
         return res.sendStatus(401);
-    }else if(foundUser.email === email && foundUser.pwd === pwd){
+    }else{
         //Before i finish i generate a jwt for a user.
         console.log("users pwd and email matched");
         const jwtPayload = {
@@ -46,8 +44,8 @@ const handleLogin = async (req: Request, res: Response, next: NextFunction)=>{
         const id : mongoDB.ObjectId = new ObjectId(`${foundUser._id}`);
 
         await userModel.findByIdAndUpdate({_id: id}, {$set: {"token": refreshToken}});
-        res.cookie("jwt", refreshToken, {maxAge: 1000 * 60 * 60 * 24, httpOnly: true});
-        res.status(200).json({"accessToken":accessToken});
+        res.cookie("jwt", refreshToken, {maxAge: 1000 * 60 * 60 * 24, httpOnly: true}).status(200).json({"accessToken":accessToken});
+        
     }
     
 }

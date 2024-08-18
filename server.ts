@@ -2,11 +2,15 @@ import express, {Request, Response, NextFunction} from "express";
 import bodyParser from "body-parser";
 import fileUpload from "express-fileupload";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 import { serverConfigs } from "./src/utils/serverConfig";
 import { vacationsRouter } from "./Routes/vacations";
 import { dbConfig } from "./src/utils/dbConfig";
 import { authRouter } from "./Routes/authRouter";
 import { verifyJWT } from "./MiddleWare/verifyJWT";
+import { refreshTokenRouter } from "./Routes/refreshRouter";
+import { registerRouter } from "./Routes/registerRouter";
+import { logOutRouter } from "./Routes/logout";
 // import jwt from "jsonwebtoken"
 const server = express();
 
@@ -55,7 +59,16 @@ server.get("/",(req: Request, res: Response)=>{
     res.status(200).send("Hello world, again!!!")
 })
 
+server.use(cookieParser())
+
+server.use('/api/register', registerRouter);
+
 server.use("/api/auth", authRouter)
+
+server.use('/api/refresh', refreshTokenRouter);
+
+server.use('/api/logout', logOutRouter);
+
 server.use(verifyJWT);
 
 server.use("/api/vacations",vacationsRouter);

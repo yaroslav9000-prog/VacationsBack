@@ -10,7 +10,6 @@ export const authRouter = express.Router();
 
 authRouter.get("/login", async(req: Request, res: Response, next: NextFunction)=>{
     try{
-        console.log(req);
         handleLogin(req, res, next);
         
     }catch(e){
@@ -18,8 +17,6 @@ authRouter.get("/login", async(req: Request, res: Response, next: NextFunction)=
         res.status(500).json('you fucked up boy');
     }
 })
-authRouter.post("/registerUser", (req: Request, res: Response)=>{
-    handleNewUser(req, res);
-})
+
 
 
