@@ -33,7 +33,7 @@ const handleLogin = async (req: Request, res: Response, next: NextFunction)=>{
         const accessToken = jwt.sign(
             {"email": foundUser.email},
             accessTokenSecret,
-            {expiresIn: "30s"}
+            {expiresIn: "3h"}
         );
         const refreshToken = jwt.sign(
             jwtPayload,

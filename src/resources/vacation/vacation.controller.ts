@@ -3,11 +3,16 @@ import { Vacation } from "./vacation.interface";
 import { VacationModel } from "./vacation.model";
 import { ObjectId } from "mongodb";
 import * as mongoDB from "mongodb";
+import fsPromises from "fs/promises";
+import path from "path"; 
+
 
 const addNewVacation = async(req: Request, res: Response)=>{
+    const pathForSavingIMGS = path.join(__dirname, "../../", "images");
     const newVacation: Vacation = {...req.body};
-    console.log(newVacation);
+    // fsPromises.
     await VacationModel.create(newVacation);
+    console.log(req.headers['Authorization']);
     res.status(200).send({"msg": "new vacation was successfully added!"});
 }
 const fetchVacations = async (req: Request, res: Response) =>{

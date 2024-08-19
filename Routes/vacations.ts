@@ -10,8 +10,6 @@ import { verifyJWT } from "../MiddleWare/verifyJWT";
 
 export const vacationsRouter = express.Router();
 
-vacationsRouter.use(verifyJWT);
-
 vacationsRouter.use(express.json());
 
 vacationsRouter.get('/', async(req: any, res: Response)=>{
