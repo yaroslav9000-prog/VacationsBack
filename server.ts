@@ -11,6 +11,7 @@ import { verifyJWT } from "./MiddleWare/verifyJWT";
 import { refreshTokenRouter } from "./Routes/refreshRouter";
 import { registerRouter } from "./Routes/registerRouter";
 import { logOutRouter } from "./Routes/logout";
+import { followersRouter } from "./Routes/followers";
 // import jwt from "jsonwebtoken"
 const server = express();
 
@@ -73,6 +74,7 @@ server.use(verifyJWT);
 
 server.use("/api/vacations",vacationsRouter);
 
+server.use("/api/follows", followersRouter);
 
 
 server.listen(serverConfigs.PORT, serverConfigs.HOST, ()=>{

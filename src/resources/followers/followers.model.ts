@@ -9,7 +9,7 @@ const followerSchema = new Schema({
         required: true,
         ref: userModel
     },
-    vacationsID: {
+    vacationID: {
         type: Schema.Types.ObjectId,
         required: true,
         ref: VacationModel
@@ -27,7 +27,7 @@ const followerSchema = new Schema({
 // })
 // followerSchema.virtual("userID", {
 //     ref: userModel,
-//     localField: "userId",
+//     localField: "userID",
 //     foreignField: "_id",
 //     justOne: true
 // })
