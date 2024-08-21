@@ -20,7 +20,7 @@ const server = express();
 
 // const corsOptions = {
 //     origin: "*", //allow any origin
-//     methods: ["GET","POST"], //which methods i will allow
+//     methods: ["GET","POST", "DELETE"], //which methods i will allow
 //     allowedHeaders: ["Content-Type","Authorization"], //which headers i will get
 //     exposedHeaders: ["Authorization"] //which headers i will expose
 // }

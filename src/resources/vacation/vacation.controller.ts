@@ -11,6 +11,9 @@ const addNewVacation = async(req: Request, res: Response)=>{
     const pathForSavingIMGS = path.join(__dirname, "../../", "images");
     const newVacation: Vacation = {...req.body};
     // fsPromises.
+    // to screen a picture a need a path to it.
+    //How to store it?
+    //Probably best to be in images folder of my api
     await VacationModel.create(newVacation);
     console.log(req.headers['Authorization']);
     res.status(200).send({"msg": "new vacation was successfully added!"});
@@ -28,10 +31,24 @@ const deleteVacation = async (req: Request, res: Response)=>{
     res.send(200).json({"msg": "vacation deleted"});
 }
 
+const editVacation = async(req: Request, res: Response)=>{
+    const bodyObject = req.body;
+    const id :mongoDB.ObjectId = new ObjectId(`${bodyObject._vacationID}`);
+    await VacationModel.findByIdAndUpdate({_id: id}, {$set: {
+        vacationDestination: bodyObject._vacationDestination,
+        vacationDescription: bodyObject._vacationDescription,
+        startDateVacation: bodyObject._startDateVacation,
+        endDateVacation: bodyObject._endDateVacation,
+        vacationPrice: bodyObject._vacationPrice,
+        imageName: bodyObject._imageName
+    }})
+    res.status(204).json({msg: "you updated your vacation successfully"});
+}
 
 
 export {
     addNewVacation,
     fetchVacations,
-    deleteVacation
+    deleteVacation,
+    editVacation
 }
