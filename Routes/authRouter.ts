@@ -8,7 +8,7 @@ export const authRouter = express.Router();
 
 
 
-authRouter.get("/login", async(req: Request, res: Response, next: NextFunction)=>{
+authRouter.get("/", async(req: Request, res: Response, next: NextFunction)=>{
     try{
         handleLogin(req, res, next);
         

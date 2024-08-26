@@ -10,9 +10,9 @@ class User{
     public lastName: string;
     public email: string;
     public pwd: string;
-    public role: Role;
+    public role: "user" | "admin";
 
-    constructor(firstName: string, lastName: string, email: string, pwd: string, role: Role, public id?: ObjectId, public token?: string){
+    constructor(firstName: string, lastName: string, email: string, pwd: string, role: "user"|"admin", public id?: ObjectId, public token?: string){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

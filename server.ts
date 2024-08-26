@@ -13,17 +13,18 @@ import { registerRouter } from "./Routes/registerRouter";
 import { logOutRouter } from "./Routes/logout";
 import { followersRouter } from "./Routes/followers";
 // import jwt from "jsonwebtoken"
+import cors from "cors";
 const server = express();
 
 
 // let isAdmin = false;
 
-// const corsOptions = {
-//     origin: "*", //allow any origin
-//     methods: ["GET","POST", "DELETE"], //which methods i will allow
-//     allowedHeaders: ["Content-Type","Authorization"], //which headers i will get
-//     exposedHeaders: ["Authorization"] //which headers i will expose
-// }
+const corsOptions = {
+    origin: "*", //allow any origin
+    methods: ["GET","POST", "DELETE"], //which methods i will allow
+    allowedHeaders: ["Content-Type","Authorization"], //which headers i will get
+    exposedHeaders: ["Authorization"] //which headers i will expose
+}
 
 // const serverCors = {
 //     origin: "127.0.0.1",
@@ -49,6 +50,7 @@ try{
 
 server.use(express.json());
 
+server.use(cors(corsOptions))
 
 server.use(express.static("upload"));
 
@@ -64,13 +66,13 @@ server.use(cookieParser())
 
 server.use('/api/register', registerRouter);
 
-server.use("/api/auth", authRouter)
+server.use("/api/login", authRouter)
 
 server.use('/api/refresh', refreshTokenRouter);
 
 server.use('/api/logout', logOutRouter);
 
-server.use(verifyJWT);
+// server.use(verifyJWT);
 
 server.use("/api/vacations",vacationsRouter);
 

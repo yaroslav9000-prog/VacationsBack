@@ -24,6 +24,7 @@ const handleLogin = async (req: Request, res: Response, next: NextFunction)=>{
         //Before i finish i generate a jwt for a user.
         console.log("users pwd and email matched");
         const jwtPayload = {
+            id: foundUser.id,
             email: foundUser.email,
             name: foundUser.firstName,
             role: foundUser.role
@@ -31,7 +32,7 @@ const handleLogin = async (req: Request, res: Response, next: NextFunction)=>{
         const accessTokenSecret = env["ACCESS_TOKEN_SECRET"];
         const refreshTokenSecret = env["REFRESH_TOKEN_SECRET"];
         const accessToken = jwt.sign(
-            {"email": foundUser.email},
+            jwtPayload,
             accessTokenSecret,
             {expiresIn: "3h"}
         );

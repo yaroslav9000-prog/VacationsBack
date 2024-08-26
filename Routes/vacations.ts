@@ -40,6 +40,6 @@ vacationsRouter.post('/editVacation', async(req: Request, res: Response)=>{
     try{
         editVacation(req, res);
     }catch(err){
-
+        res.sendStatus(500);
     }
 })
