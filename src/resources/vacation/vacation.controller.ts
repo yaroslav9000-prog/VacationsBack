@@ -5,23 +5,31 @@ import { ObjectId } from "mongodb";
 import * as mongoDB from "mongodb";
 import fsPromises from "fs/promises";
 import path from "path"; 
+import fileUpload from "express-fileupload";
 
-
+const multer = require('multer');
+const upload = multer({dest: 'images/'});
 const addNewVacation = async(req: Request, res: Response)=>{
-    const pathForSavingIMGS = path.join(__dirname, "../../", "images");
-    const newVacation: Vacation = {...req.body};
+
+    if(!req.files || Object.keys(req.files).length ===0){
+        res.status(400).json({"msg":"no file was attached"});
+    }
+
+
+    
     // fsPromises.
     // to screen a picture a need a path to it.
     //How to store it?
     //Probably best to be in images folder of my api
-    await VacationModel.create(newVacation);
+    // await VacationModel.create(newVacation);
     console.log(req.headers['Authorization']);
     res.status(200).send({"msg": "new vacation was successfully added!"});
 }
 const fetchVacations = async (req: Request, res: Response) =>{
     const data = await VacationModel.find({});
+    const allVacations = data.map(item=> item);
     console.log("I brought you vacation data :)!!!");
-    res.status(200).json(data);
+    res.status(200).json({"vacations":allVacations});
 }
 
 const deleteVacation = async (req: Request, res: Response)=>{

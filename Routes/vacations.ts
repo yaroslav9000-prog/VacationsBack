@@ -2,11 +2,15 @@
 import express, {Request, Response} from "express";
 import {MongoClient, ObjectId, Db} from "mongodb";
 import axios from "axios";
-
 import { VacationModel } from "../src/resources/vacation/vacation.model";
 import { Vacation } from "../src/resources/vacation/vacation.interface";
 import { addNewVacation, deleteVacation, editVacation, fetchVacations } from "../src/resources/vacation/vacation.controller";
 import { verifyJWT } from "../MiddleWare/verifyJWT";
+import fileUpload from "express-fileupload";
+import { storage } from "../src/cloudinary";
+const multer = require('multer');
+const upload = multer({storage});
+
 
 export const vacationsRouter = express.Router();
 
@@ -20,7 +24,7 @@ vacationsRouter.get('/', async(req: any, res: Response)=>{
     }
 
 })
-vacationsRouter.post('/createVacation', async(req: Request, res: Response)=>{
+vacationsRouter.post('/createVacation', upload.single('uploaded_image'),async(req: Request, res: Response)=>{
     try{
         await addNewVacation(req, res);
     }catch(e){

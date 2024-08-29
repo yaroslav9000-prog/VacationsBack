@@ -2,9 +2,11 @@ import { Types } from 'mongoose';
 import {Response, Request, NextFunction} from "express";
 import { fetchUsers } from "../src/resources/user/users.controller";
 import { User } from "../src/resources/user/user";
+import fs from "node:fs";
 import jwt from "jsonwebtoken";
 import { userModel } from "../src/resources/user/User.model";
 import * as mongoDB from "mongodb";
+import path from 'node:path';
 
 const ObjectId = mongoDB.ObjectId;
 
@@ -13,9 +15,11 @@ const env = result.parsed;
 
 
 const handleLogin = async (req: Request, res: Response, next: NextFunction)=>{
-    const {email, pwd} = req.body;
+    const pwd = req.query.pwd
+    const email = req.query.email
+    console.log(pwd, email)
     // const duplicateEmail = usersData.find((item: User)=> item.email == email);
-    if(!req.body.pwd || !req.body.email) return res.status(400).json({"msg": "password and username is required"});
+    if(!pwd || !email) return res.status(400).json({"msg": "password and username is required"});
     const foundUser= await userModel.findOne({email: email, pwd: pwd});
     if(!foundUser){
         console.log("entered false statement");
@@ -45,7 +49,7 @@ const handleLogin = async (req: Request, res: Response, next: NextFunction)=>{
         const id : mongoDB.ObjectId = new ObjectId(`${foundUser._id}`);
 
         await userModel.findByIdAndUpdate({_id: id}, {$set: {"token": refreshToken}});
-        res.cookie("jwt", refreshToken, {maxAge: 1000 * 60 * 60 * 24, httpOnly: true}).status(200).json({"accessToken":accessToken});
+        res.cookie("jwt", refreshToken, {maxAge: 1000 * 60 * 60 * 24, httpOnly: true}).status(200).json({"token":accessToken, "user": foundUser});
         
     }
     
