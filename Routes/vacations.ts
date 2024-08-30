@@ -10,6 +10,7 @@ import fileUpload from "express-fileupload";
 import path from "path";
 import fs from "fs";
 import mongoose from "mongoose";
+import { error } from "console";
 
 
 export const vacationsRouter = express.Router();
@@ -27,7 +28,7 @@ vacationsRouter.get('/', async(req: any, res: Response)=>{
 })
 vacationsRouter.post('/addVacation',async(req: Request, res: Response)=>{
     try {
-        const uploadDir = path.join(__dirname, '..', 'src', 'images');
+        const uploadDir = path.join(__dirname, "..", "src", "images");
         console.log('Request body:', req.body);
         // console.log('Request files:', req.files.newVacation);
         
@@ -37,29 +38,33 @@ vacationsRouter.post('/addVacation',async(req: Request, res: Response)=>{
         if (!req.files || Object.values(req.files).length === 0) {
             return res.status(400).json({ "msg": "No image file was uploaded" });
         }
-        console.log('Image File:', req.files);
+        console.log('Image File:', req.files[`uploaded_image[]`]);
 
         const [ vacationDestination, startDateVacation, endDateVacation, vacationDescription, vacationPrice  ] = Object.values(req.body);
         
         
-        const imageFile = req.files.imageFile as fileUpload.UploadedFile;
+        const imageFile = req.files[`uploaded_image[]`] as fileUpload.UploadedFile;
         // console.log("image file:", imageFile)
         // Generate a unique filename
         // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        // const filename = uniqueSuffix + path.extname(imageFile.name);
-        // const filepath = path.join(uploadDir);
+        const filename = imageFile.name + path.extname(imageFile.name);
+        const filepath = path.join(uploadDir);
 
         // Move the file to the upload directory
         // await imageFile.mv(filepath);
-        // await imageFile.mv(uploadDir);
-        const buffer = imageFile.data;
-        fs.writeFile(filename, buffer, (err) => {
-            if (err) {
-                console.error('Error saving file:', err);
-                return;
-            }
-            console.log('File saved successfully:', filename);
-        });
+        imageFile.mv(filepath);
+        
+        imageFile.mv(uploadDir).then((response)=> console.log(response)).catch(error=> console.log(error));
+        
+        
+        // const buffer = imageFile.data;
+        // fs.writeFile(uploadDir, buffer, (err) => {
+        //     if (err) {
+        //         console.error('Error saving file:', err);
+        //         return;
+        //     }
+        //     console.log('File saved successfully:', uploadDir);
+        // });
         
 
         // Generate URL for the uploaded image
