@@ -9,6 +9,6 @@ export interface Vacation extends Document{
     vacaStartDate: string;
     vacaEndDate: string;
     vacaPrice: number;
-    imgName: string;
+    imgUrl: string;
 
 }

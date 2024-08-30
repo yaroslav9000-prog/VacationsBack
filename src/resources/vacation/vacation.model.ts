@@ -25,10 +25,10 @@ const VacationSchema = new mongoose.Schema ({
     vacationPrice: {
         type: Number, 
         required: true,
-        max: 10000
-        
+        max: 10000,
+        min: 0  
     },
-    imageName: {
+    imageUrl: {
         type: String, 
         required: true   
     }
