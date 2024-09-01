@@ -14,6 +14,7 @@ import { logOutRouter } from "./Routes/logout";
 import { followersRouter } from "./Routes/followers";
 // import jwt from "jsonwebtoken"
 import cors from "cors";
+import path from "node:path";
 const server = express();
 
 
@@ -52,7 +53,7 @@ server.use(express.json());
 
 server.use(cors(corsOptions))
 
-server.use(express.static("upload"));
+server.use(express.static(path.join("src", "public")));
 
 server.use(fileUpload({createParentPath: true}))
 

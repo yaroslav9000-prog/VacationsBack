@@ -3,6 +3,10 @@ import mongoose, { Schema, model } from "mongoose";
 import { dbConfig } from "../../utils/dbConfig";
 
 const VacationSchema = new mongoose.Schema ({
+    _id: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
     vacationDestination: {
         type: String,
         required: true
@@ -28,7 +32,7 @@ const VacationSchema = new mongoose.Schema ({
         max: 10000,
         min: 0  
     },
-    imageUrl: {
+    imageName: {
         type: String, 
         required: true   
     }

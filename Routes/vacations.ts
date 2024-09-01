@@ -5,12 +5,10 @@ import axios from "axios";
 import { VacationModel } from "../src/resources/vacation/vacation.model";
 import { Vacation } from "../src/resources/vacation/vacation.interface";
 import { deleteVacation, editVacation, fetchVacations } from "../src/resources/vacation/vacation.controller";
-import { verifyJWT } from "../MiddleWare/verifyJWT";
 import fileUpload from "express-fileupload";
 import path from "path";
 import fs from "fs";
 import mongoose from "mongoose";
-import { error } from "console";
 
 
 export const vacationsRouter = express.Router();
@@ -28,9 +26,8 @@ vacationsRouter.get('/', async(req: any, res: Response)=>{
 })
 vacationsRouter.post('/addVacation',async(req: Request, res: Response)=>{
     try {
-        const uploadDir = path.join(__dirname, "..", "src", "images");
+        const uploadDir = path.join(__dirname, "..", "src" ,"public", "images");
         console.log('Request body:', req.body);
-        // console.log('Request files:', req.files.newVacation);
         
         if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
@@ -44,53 +41,38 @@ vacationsRouter.post('/addVacation',async(req: Request, res: Response)=>{
         
         
         const imageFile = req.files[`uploaded_image[]`] as fileUpload.UploadedFile;
-        // console.log("image file:", imageFile)
-        // Generate a unique filename
-        // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        
         const filename = imageFile.name + path.extname(imageFile.name);
-        const filepath = path.join(uploadDir);
+        const filepath = path.join(uploadDir, filename);
 
-        // Move the file to the upload directory
-        // await imageFile.mv(filepath);
-        imageFile.mv(filepath);
+        await imageFile.mv(filepath, (e)=>{
+            console.log(e);
+        })
         
-        imageFile.mv(uploadDir).then((response)=> console.log(response)).catch(error=> console.log(error));
-        
-        
-        // const buffer = imageFile.data;
-        // fs.writeFile(uploadDir, buffer, (err) => {
-        //     if (err) {
-        //         console.error('Error saving file:', err);
-        //         return;
-        //     }
-        //     console.log('File saved successfully:', uploadDir);
-        // });
-        
+        const imageUrl = `${imageFile.name}`;
 
-        // Generate URL for the uploaded image
-        const imageUrl = `/images/${imageFile.name}`;
-
-        // Create new vacation object
         const newVacation = {
+            _id: new ObjectId(),
             vacationDestination: vacationDestination, 
             vacationDescription: vacationDescription, 
             startDateVacation: startDateVacation, 
             endDateVacation: endDateVacation,
             vacationPrice: vacationPrice, 
-            imageUrl: imageUrl
+            imageName: imageUrl
         };
 
         // Save to database
-        const savedVacation = await VacationModel.create(newVacation);
+        await VacationModel.create(newVacation);
+
 
         res.status(201).json({
             "msg": "New vacation was successfully added!",
-            "vacation": savedVacation
+            "vacation": newVacation
         });
     } catch (e) {
         console.error(e);
         if (e instanceof mongoose.Error.ValidationError) {
-            // Handle Mongoose validation errors
+            
             const errors = Object.values(e.errors).map(err => err.message);
             return res.status(400).json({ "msg": "Validation error", errors });
         }
@@ -105,7 +87,7 @@ vacationsRouter.delete('/deleteVacation', async(req: Request, res: Response)=>{
         res.status(400).json({"msg": "no such vacation to delete"})
     }    
 })
-vacationsRouter.post('/editVacation', async(req: Request, res: Response)=>{
+vacationsRouter.post('/editVacation/:id', async(req: Request, res: Response)=>{
     try{
         editVacation(req, res);
     }catch(err){
