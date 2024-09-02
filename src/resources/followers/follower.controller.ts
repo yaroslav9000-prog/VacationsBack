@@ -12,10 +12,11 @@ const getFollowsForUser = async (req: Request, res: Response, next: NextFunction
     const userId: mongoDB.ObjectId = new ObjectId(`${req.params.id}`);
     console.log(userId);
     const followsVacation = (await followerModel.find({userID: userId})).map((item: Follower)=> item);
-    const allFollowers = (await followerModel.find()).map((item: Follower)=> item);
+    const allFollowers = (await followerModel.find().populate("vacationID")).map((item: Follower)=> item);
+    const allVacations = (await VacationModel.find()).map((item: Vacation)=> item)
     if(!followsVacation || followsVacation === null) return next();
     // const followsVacationArray : Follower[] = followsVacation.map((item: Follower)=>item);
-    res.status(200).json({"userFollows":followsVacation, "allFollows": allFollowers});
+    res.status(200).json({"userFollows":followsVacation, "allFollows": allFollowers, "vacations": allVacations});
 }
 
 const addFollowForUser = async (req: Request, res: Response,next: NextFunction)=>{
@@ -45,6 +46,15 @@ const deleteFollowForUser = async (req: Request, res: Response, next: NextFuncti
     const deletedFollower = await followerModel.findOne({"userID": userID, "vacationID": vacationID});
     await followerModel.deleteOne({"userID": userID, "vacationID": vacationID});
     res.status(200).json({"deletedFollow": deletedFollower});
+}
+
+export const getVacationsReport = async (req: Request, res: Response)=>{
+    const report = (await VacationModel.aggregate([{$lookup: {from: "Followers", localField: "_id", foreignField: "vacationID", as: "followers"}}, {$project: {_id: 1, "vacationDestination": 1, "followers": 1}}])).map(item=> item);
+    res.status(200).json({"theReport": report});
+}
+export const getBeautifulReport = async (req: Request, res: Response)=>{
+    const report = (await VacationModel.aggregate([{$lookup: {from: "Followers", localField: "_id", foreignField: "vacationID", as: "followers"}}, {$project: {_id: 0, "vacationDestination": 1, "followers": 1}}])).map(item=> item);
+    res.status(200).json({"theReport": report});
 }
 
 export{

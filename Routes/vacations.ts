@@ -9,6 +9,7 @@ import fileUpload from "express-fileupload";
 import path from "path";
 import fs from "fs";
 import mongoose from "mongoose";
+import { getBeautifulReport, getVacationsReport } from "../src/resources/followers/follower.controller";
 
 
 export const vacationsRouter = express.Router();
@@ -19,6 +20,22 @@ const uploadDir = path.join(__dirname, '..', 'src', 'images');
 vacationsRouter.get('/', async(req: any, res: Response)=>{
     try{
         fetchVacations(req, res);
+    }catch(e){
+        console.log(`there is an error fetching your data ${e}`);
+    }
+
+})
+vacationsRouter.get('/vacationReport', async(req: any, res: Response)=>{
+    try{
+        getVacationsReport(req, res);
+    }catch(e){
+        console.log(`there is an error fetching your data ${e}`);
+    }
+
+})
+vacationsRouter.get('/vacationReportB', async(req: any, res: Response)=>{
+    try{
+        getBeautifulReport(req, res);
     }catch(e){
         console.log(`there is an error fetching your data ${e}`);
     }
@@ -80,7 +97,7 @@ vacationsRouter.post('/addVacation',async(req: Request, res: Response)=>{
     }
 })
 
-vacationsRouter.delete('/deleteVacation', async(req: Request, res: Response)=>{
+vacationsRouter.delete('/deleteVacation/:id', async(req: Request, res: Response)=>{
     try{
         deleteVacation(req, res);
     }catch(err){

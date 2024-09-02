@@ -8,12 +8,12 @@ const followerSchema = new Schema({
     userID: {
         type: Schema.Types.ObjectId,
         required: true,
-        // ref: userModel
+        ref: userModel
     },
     vacationID: {
         type: Schema.Types.ObjectId,
         required: true,
-        // ref: VacationModel
+        ref: VacationModel
     }
 },{
     versionKey: false,
@@ -22,7 +22,7 @@ const followerSchema = new Schema({
 
 // followerSchema.virtual("vacationName", {
 //     ref: VacationModel,
-//     localField: "vacations",
+//     localField: "vacationID",
 //     foreignField: "_id",
 //     justOne: false
 // })
