@@ -22,6 +22,7 @@ const getFollowsForUser = async (req: Request, res: Response, next: NextFunction
 const addFollowForUser = async (req: Request, res: Response,next: NextFunction)=>{
     try{
         console.log(req.body.data);
+        console.log(req.body);
     const userID: string = req.body.data.userID;
     const vacationID: string = req.body.data.vacationID;
     const userID_to_add : mongoDB.ObjectId = new ObjectId(userID);

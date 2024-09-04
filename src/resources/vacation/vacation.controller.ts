@@ -8,11 +8,12 @@ import fsPromises from "fs/promises";
 import path from "path"; 
 import fileUpload from "express-fileupload";
 import { followerModel } from "../followers/followers.model";
+import { format } from "date-fns";
 
 const imagePath = path.join(__dirname, "..", "..", "public", "images");
 
 const fetchVacations = async (req: Request, res: Response) =>{
-    const data = await VacationModel.find({});
+    const data = await VacationModel.aggregate([{$sort: {startDateVacation: 1}}]);
     const allVacations = data.map(item=> item);
     console.log("I brought you vacation data :)!!!");
     res.status(200).json({"vacations":allVacations});
@@ -75,6 +76,29 @@ const editVacation = async(req: Request, res: Response)=>{
     const updatedVacation = await VacationModel.findOne({_id: vacationID});
     
     res.status(200).json({"updatedVacation": updatedVacation});
+}
+export const getStarted = async(req: Request, res: Response)=>{
+    try{
+        const currentDate = format(new Date(), "yyyy-MM-dd");
+        console.log(currentDate);
+        const started = await VacationModel.find({startDateVacation:{$lt: currentDate}, endDateVacation:{$gt: currentDate}});
+        const result = started.map(item => item);
+        console.log(result);
+        res.status(200).json({"result": started});
+    }catch(err){
+        console.log(err);
+    }
+}
+export const getNotStarted= async(req: Request, res: Response)=>{
+    try{
+        const currentDate = format(new Date(), "yyyy-MM-dd");
+        const notStarted = await VacationModel.find({startDateVacation: {$gt: currentDate}});
+        const result = notStarted.map(item => item);
+        console.log(result);
+        res.status(200).json({"result": result});
+    }catch(err){
+        console.log(err);
+    }
 }
 
 

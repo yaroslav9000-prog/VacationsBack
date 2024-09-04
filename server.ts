@@ -15,6 +15,7 @@ import { followersRouter } from "./Routes/followers";
 // import jwt from "jsonwebtoken"
 import cors from "cors";
 import path from "node:path";
+import { filesRouter } from "./Routes/filesRouter";
 const server = express();
 
 
@@ -73,12 +74,15 @@ server.use('/api/refresh', refreshTokenRouter);
 
 server.use('/api/logout', logOutRouter);
 
-// server.use(verifyJWT);
-
 server.use("/api/vacations",vacationsRouter);
+
+server.use(verifyJWT);
+
+
 
 server.use("/api/follows", followersRouter);
 
+server.use("/api/files", filesRouter)
 
 server.listen(serverConfigs.PORT, serverConfigs.HOST, ()=>{
     console.log(`server is up and running on port: ${serverConfigs.PORT}`);

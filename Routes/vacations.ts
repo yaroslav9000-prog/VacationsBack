@@ -4,11 +4,12 @@ import {MongoClient, ObjectId, Db} from "mongodb";
 import axios from "axios";
 import { VacationModel } from "../src/resources/vacation/vacation.model";
 import { Vacation } from "../src/resources/vacation/vacation.interface";
-import { deleteVacation, editVacation, fetchVacations } from "../src/resources/vacation/vacation.controller";
+import { deleteVacation, editVacation, fetchVacations, getNotStarted, getStarted } from "../src/resources/vacation/vacation.controller";
 import fileUpload from "express-fileupload";
 import path from "path";
 import fs from "fs";
 import mongoose from "mongoose";
+import {format} from "date-fns";
 import { getBeautifulReport, getVacationsReport } from "../src/resources/followers/follower.controller";
 
 
@@ -109,5 +110,19 @@ vacationsRouter.post('/editVacation/:id', async(req: Request, res: Response)=>{
         editVacation(req, res);
     }catch(err){
         res.sendStatus(500);
+    }
+})
+vacationsRouter.get('/notStarted', async(req: Request, res: Response)=>{
+    try{
+        getNotStarted(req, res)
+    }catch(err){
+        console.log(err);
+    }
+})
+vacationsRouter.get('/started', async(req: Request, res: Response)=>{
+    try{
+        getStarted(req, res);
+    }catch(err){
+        console.log(err);
     }
 })
